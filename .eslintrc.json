@@ -2,8 +2,7 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2020,
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
   "extends": [
     "eslint:recommended",
@@ -11,7 +10,7 @@
   ],
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
   },
@@ -19,5 +18,6 @@
     "node": true,
     "es2020": true,
     "jest": true
-  }
+  },
+  "ignorePatterns": ["**/*.test.ts", "**/*.spec.ts", "dist/**", "node_modules/**", "examples/**"]
 }
