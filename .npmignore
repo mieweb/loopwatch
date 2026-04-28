@@ -1,0 +1,37 @@
+# Source files
+src/
+tsconfig.json
+jest.config.js
+.eslintrc.json
+
+# Tests
+**/*.test.ts
+**/*.spec.ts
+__tests__/
+
+# Examples (keep these out of npm package)
+examples/
+
+# Development files
+.git/
+.github/
+node_modules/
+coverage/
+.nyc_output/
+
+# Documentation (some are included in package.json files)
+CONTRIBUTING.md
+
+# Build artifacts
+*.log
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

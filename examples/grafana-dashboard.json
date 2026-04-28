@@ -1,0 +1,255 @@
+{
+  "dashboard": {
+    "title": "Node.js Event Loop Health",
+    "tags": ["nodejs", "loopwatch", "event-loop"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 1,
+    "refresh": "10s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Event Loop Delay (Percentiles)",
+        "type": "graph",
+        "gridPos": {
+          "x": 0,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "node_event_loop_delay_p50_ms",
+            "legendFormat": "p50",
+            "refId": "A"
+          },
+          {
+            "expr": "node_event_loop_delay_p95_ms",
+            "legendFormat": "p95",
+            "refId": "B"
+          },
+          {
+            "expr": "node_event_loop_delay_p99_ms",
+            "legendFormat": "p99",
+            "refId": "C"
+          }
+        ],
+        "yaxes": [
+          {
+            "label": "Delay (ms)",
+            "format": "ms"
+          },
+          {
+            "show": false
+          }
+        ],
+        "alert": {
+          "name": "High Event Loop Delay",
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [100],
+                "type": "gt"
+              },
+              "query": {
+                "params": ["B", "5m", "now"]
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "5m",
+          "frequency": "1m",
+          "message": "Event loop p95 delay is above 100ms for 5 minutes",
+          "noDataState": "no_data"
+        }
+      },
+      {
+        "id": 2,
+        "title": "Event Loop Utilization",
+        "type": "graph",
+        "gridPos": {
+          "x": 12,
+          "y": 0,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "node_event_loop_utilization * 100",
+            "legendFormat": "Utilization %",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "label": "Utilization (%)",
+            "format": "percent",
+            "max": 100,
+            "min": 0
+          },
+          {
+            "show": false
+          }
+        ],
+        "alert": {
+          "name": "High Event Loop Utilization",
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [90],
+                "type": "gt"
+              },
+              "query": {
+                "params": ["A", "5m", "now"]
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "5m",
+          "frequency": "1m",
+          "message": "Event loop utilization is above 90% for 5 minutes",
+          "noDataState": "no_data"
+        }
+      },
+      {
+        "id": 3,
+        "title": "Max Event Loop Delay",
+        "type": "graph",
+        "gridPos": {
+          "x": 0,
+          "y": 8,
+          "w": 12,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "node_event_loop_delay_max_ms",
+            "legendFormat": "Max Delay",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "label": "Delay (ms)",
+            "format": "ms"
+          },
+          {
+            "show": false
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Current Status",
+        "type": "stat",
+        "gridPos": {
+          "x": 12,
+          "y": 8,
+          "w": 6,
+          "h": 4
+        },
+        "targets": [
+          {
+            "expr": "node_event_loop_delay_p95_ms",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "textMode": "value_and_name"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "value": 0,
+                  "color": "green"
+                },
+                {
+                  "value": 50,
+                  "color": "yellow"
+                },
+                {
+                  "value": 100,
+                  "color": "red"
+                }
+              ]
+            },
+            "unit": "ms"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "ELU Status",
+        "type": "stat",
+        "gridPos": {
+          "x": 18,
+          "y": 8,
+          "w": 6,
+          "h": 4
+        },
+        "targets": [
+          {
+            "expr": "node_event_loop_utilization * 100",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "textMode": "value_and_name"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "value": 0,
+                  "color": "green"
+                },
+                {
+                  "value": 80,
+                  "color": "yellow"
+                },
+                {
+                  "value": 90,
+                  "color": "red"
+                }
+              ]
+            },
+            "unit": "percent"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "title": "Event Loop Health Over Time",
+        "type": "heatmap",
+        "gridPos": {
+          "x": 0,
+          "y": 16,
+          "w": 24,
+          "h": 8
+        },
+        "targets": [
+          {
+            "expr": "node_event_loop_delay_p95_ms",
+            "format": "time_series",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "calculate": true,
+          "cellGap": 2
+        }
+      }
+    ]
+  }
+}
